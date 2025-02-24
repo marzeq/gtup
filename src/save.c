@@ -6,6 +6,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+extern char* strdup(const char*);
+
 string strappend(const string s1, const string s2) {
   size_t len1 = strlen(s1);
   size_t len2 = strlen(s2);
