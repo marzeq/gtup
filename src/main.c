@@ -9,9 +9,19 @@
 #define printe(...) fprintf(stderr, __VA_ARGS__)
 #define seq(a1, a2) strcmp(a1, a2) == 0
 
+#define USAGE                                                                  \
+  "Usage:\n\n"                                                                 \
+                                                                               \
+  "gtup [mac addr/saved name]\n"                                               \
+  "gtup --save [name] [mac addr]\n"                                            \
+  "gtup --edit [name] [new mac addr]\n"                                        \
+  "gtup --delete [name]\n"
+
+#define VERSION "25.02.1"
+
 int main(int argc, const string* argv) {
   if (argc == 1) {
-    printe("Usage: %s [mac addr]\n", argv[0]);
+    printe(USAGE);
     return 1;
   }
 
@@ -59,12 +69,10 @@ int main(int argc, const string* argv) {
       }
       return 0;
     } else if (seq(argv[1], "--help") || seq(argv[1], "-h")) {
-      printf("Usage:\n\n"
-
-             "gtup [mac addr/saved name]\n"
-             "gtup --save [name] [mac addr]\n"
-             "gtup --edit [name] [new mac addr]\n"
-             "gtup --delete [name]\n");
+      printf(USAGE);
+      return 0;
+    } else if (seq(argv[1], "--version") || seq(argv[1], "-v")) {
+      printf(VERSION "\n");
       return 0;
     } else {
       printe("Unknown option %s\n", argv[1]);
