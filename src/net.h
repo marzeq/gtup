@@ -13,8 +13,6 @@ typedef enum {
 #define PACK_SZ 102 // 6b + 16 * 6b
 #define BROADCAST_IP "255.255.255.255"
 
-byte* parse_mac_addr(const string saddr);
-
 WolSendResult send_wol_packet(const byte* mac_addr);
 
 #endif // _NET_H

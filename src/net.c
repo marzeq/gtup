@@ -6,21 +6,6 @@
 #include <string.h>
 #include <unistd.h>
 
-byte* parse_mac_addr(const string saddr) {
-  byte* addr = malloc(6 * sizeof(byte));
-  if (!addr) {
-    return NULL;
-  }
-
-  if (sscanf(saddr, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &addr[0], &addr[1],
-             &addr[2], &addr[3], &addr[4], &addr[5]) != 6) {
-    free(addr);
-    return NULL;
-  }
-
-  return addr;
-}
-
 WolSendResult send_wol_packet(const byte* mac_addr) {
   int sock;
   struct sockaddr_in server;
