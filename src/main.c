@@ -12,12 +12,17 @@
 #define USAGE                                                                  \
   "Usage:\n\n"                                                                 \
                                                                                \
-  "gtup [mac addr/saved name]\n"                                               \
-  "gtup --save [name] [mac addr]\n"                                            \
-  "gtup --edit [name] [new mac addr]\n"                                        \
-  "gtup --delete [name]\n"
+  "gtup [mac addr/saved name]\n\n"                                             \
+                                                                               \
+  "gtup --save/-s [name] [mac addr]\n"                                         \
+  "gtup --edit/-e [name] [new mac addr]\n"                                     \
+  "gtup --delete/-d [name]\n\n"                                                \
+  "gtup --list/-l\n\n"                                                         \
+                                                                               \
+  "gtup --help/-h\n"                                                           \
+  "gtup --version/-v\n"
 
-#define VERSION "25.02.1"
+#define VERSION "25.02.2"
 
 int main(int argc, const string* argv) {
   if (argc == 1) {
@@ -28,7 +33,7 @@ int main(int argc, const string* argv) {
   if (strlen(argv[1]) >= 1 && argv[1][0] == '-') {
     if (seq(argv[1], "--save") || seq(argv[1], "-s")) {
       if (argc != 4) {
-        printe("Usage: %s --save/-s [name] [mac addr]\n", argv[0]);
+        printe("Usage: gtup --save/-s [name] [mac addr]\n");
         return 1;
       }
 
@@ -46,7 +51,7 @@ int main(int argc, const string* argv) {
       return 0;
     } else if (seq(argv[1], "--edit") || seq(argv[1], "-e")) {
       if (argc != 4) {
-        printe("Usage: %s --edit/-e [name] [new mac addr]\n", argv[0]);
+        printe("Usage: gtup --edit/-e [name] [new mac addr]\n");
         return 1;
       }
 
@@ -58,7 +63,7 @@ int main(int argc, const string* argv) {
       return 0;
     } else if (seq(argv[1], "--delete") || seq(argv[1], "-d")) {
       if (argc != 3) {
-        printe("Usage: %s --delete/-d [name]\n", argv[0]);
+        printe("Usage: gtup --delete/-d [name]\n");
         return 1;
       }
 
@@ -66,6 +71,16 @@ int main(int argc, const string* argv) {
       if (res != SAVE_RESULT_OK) {
         printe("Failed to delete device\n");
         return 1;
+      }
+      return 0;
+    } else if (seq(argv[1], "--list") || seq(argv[1], "-l")) {
+      string* devices = list_saved_devices();
+      if (devices) {
+        for (size_t i = 0; devices[i]; i++) {
+          printf("%s\n", devices[i]);
+          free(devices[i]);
+        }
+        free(devices);
       }
       return 0;
     } else if (seq(argv[1], "--help") || seq(argv[1], "-h")) {

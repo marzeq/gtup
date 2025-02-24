@@ -148,3 +148,45 @@ string resolve_saved_device(const string name) {
   fclose(f);
   return NULL;
 }
+
+string* list_saved_devices(void) {
+  FILE* f = fopen(SAVE_FILE, "r");
+  if (!f) {
+    return NULL;
+  }
+
+  size_t count = 0;
+  size_t capacity = 10;
+  string* devices = malloc(capacity * sizeof(string));
+  if (!devices) {
+    fclose(f);
+    return NULL;
+  }
+
+  char line[256];
+  while (fgets(line, sizeof(line), f)) {
+    char saved_name[128], saved_mac[128];
+    if (sscanf(line, "%127[^:]:%127s", saved_name, saved_mac) == 2) {
+      size_t entry_len = strlen(saved_name) + strlen(saved_mac) + 4;
+      string entry = malloc(entry_len);
+      if (!entry) {
+        fclose(f);
+        return NULL;
+      }
+      snprintf(entry, entry_len, "%s - %s", saved_name, saved_mac);
+      if (count >= capacity) {
+        capacity *= 2;
+        devices = realloc(devices, capacity * sizeof(string));
+        if (!devices) {
+          fclose(f);
+          return NULL;
+        }
+      }
+      devices[count++] = entry;
+    }
+  }
+
+  fclose(f);
+  devices[count] = NULL;
+  return devices;
+}

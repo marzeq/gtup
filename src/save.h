@@ -13,5 +13,6 @@ SaveResult save_device(const string name, const string mac_addr);
 SaveResult delete_saved_device(const string name);
 SaveResult modify_saved_device(const string name, const string new_mac_addr);
 string resolve_saved_device(const string name);
+string* list_saved_devices(void);
 
 #endif // _SAVE_H
